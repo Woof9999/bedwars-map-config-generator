@@ -130,6 +130,30 @@ function generateCode() {
     document.getElementById('output').value = code;
 }
 </script>
+    
+<script>
+document.getElementById('convert').addEventListener('click', () => {
+    const input = document.getElementById('coords').value.trim();
+    const lines = input.split(/\n+/);
 
+    const result = lines.map(line => {
+        const parts = line.trim().split(/\s+/);
+        if (parts.length === 3) {
+            const x = roundToHalf(parseFloat(parts[0]));
+            const y = roundToHalf(parseFloat(parts[1]));
+            const z = roundToHalf(parseFloat(parts[2]));
+            return `${x} ${y} ${z}`;
+        }
+        return line;
+    }).join('\n');
+
+    document.getElementById('output').value = result;
+});
+
+function roundToHalf(num) {
+    return Math.round(num * 2) / 2;
+}
+</script>
+    
 </body>
 </html>
