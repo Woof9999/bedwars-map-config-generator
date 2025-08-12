@@ -47,11 +47,16 @@ const teamColors = [
     "red", "green", "purple", "blue", "yellow", "pink", "gray", "orange"
 ];
 
+function roundToHalf(num) {
+    return Math.round(num * 2) / 2;
+}
+
 function formatCoord(num) {
-    if (!num) return "0.0";
+    // parse float and round to nearest 0.5, then fix decimals to 1 digit
     let n = parseFloat(num);
     if (isNaN(n)) return "0.0";
-    return Number.isInteger(n) ? n.toFixed(1) : n;
+    n = roundToHalf(n);
+    return n.toFixed(1);
 }
 
 function parseTriple(str) {
@@ -85,16 +90,16 @@ function addGen(type) {
 }
 
 function generateCode() {
-    const mapName = document.getElementById('mapName').value;
-    const heightLimit = document.getElementById('heightLimit').value || "0";
+    const mapName = document.getElementById('mapName').value.trim();
+    const heightLimit = document.getElementById('heightLimit').value.trim() || "0";
 
-    let teamsDivs = document.querySelectorAll('#teams .box');
+    const teamsDivs = document.querySelectorAll('#teams .box');
     let teamsCode = [];
     teamsDivs.forEach(team => {
-        let color = team.querySelector('.teamColor').value;
-        let gen = parseTriple(team.querySelector('.generator').value);
-        let bed = parseTriple(team.querySelector('.bed').value);
-        let spawn = parseTriple(team.querySelector('.spawn').value);
+        const color = team.querySelector('.teamColor').value;
+        const gen = parseTriple(team.querySelector('.generator').value);
+        const bed = parseTriple(team.querySelector('.bed').value);
+        const spawn = parseTriple(team.querySelector('.spawn').value);
 
         teamsCode.push(
 `array_merge([
@@ -127,33 +132,10 @@ function generateCode() {
         "heightLimit" => ${heightLimit},
     ];
 }`;
+
     document.getElementById('output').value = code;
 }
 </script>
-    
-<script>
-document.getElementById('convert').addEventListener('click', () => {
-    const input = document.getElementById('coords').value.trim();
-    const lines = input.split(/\n+/);
 
-    const result = lines.map(line => {
-        const parts = line.trim().split(/\s+/);
-        if (parts.length === 3) {
-            const x = roundToHalf(parseFloat(parts[0]));
-            const y = roundToHalf(parseFloat(parts[1]));
-            const z = roundToHalf(parseFloat(parts[2]));
-            return `${x} ${y} ${z}`;
-        }
-        return line;
-    }).join('\n');
-
-    document.getElementById('output').value = result;
-});
-
-function roundToHalf(num) {
-    return Math.round(num * 2) / 2;
-}
-</script>
-    
 </body>
 </html>
