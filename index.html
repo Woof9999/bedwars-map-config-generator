@@ -38,11 +38,10 @@
         }
 
         .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 24px;
-            align-items: start;
-        }
+        }    
 
         .panel {
             background: white;
@@ -99,7 +98,7 @@
         }
 
         textarea {
-            height: 520px;
+            height: 400px;
             resize: vertical;
             font-family: Consolas, monospace;
             font-size: 13px;
@@ -204,6 +203,15 @@
             margin-top: 6px;
         }
 
+        .generate-wrapper {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding-top: 14px;
+            margin-top: 24px;
+            border-top: 1px solid #e5e7eb;
+        }
+
         @media (max-width: 850px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -257,7 +265,9 @@
             <div id="emeraldGens"></div>
             <button class="add-btn" onclick="addGen('emeraldGens')">+ Add Emerald Gen</button>
 
-            <button class="generate-btn" onclick="generateCode()">Generate PHP Code</button>
+            <div class="generate-wrapper">
+                <button class="generate-btn" onclick="generateCode()">Generate PHP Code</button>
+            </div>
         </div>
 
         <div class="panel">
