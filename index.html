@@ -3,70 +3,273 @@
 <head>
     <title>Bedwars Map PHP Generator</title>
     <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-    h2 { margin-top: 40px; }
-    .box { background: white; padding: 15px; margin-bottom: 15px; border-radius: 6px; position: relative; }
-    label { display: block; margin-top: 5px; }
-    select, input { padding: 5px; margin-bottom: 5px; width: 230px; }
-    button { margin-top: 10px; padding: 6px 10px; cursor: pointer; }
-    textarea { width: 100%; height: 400px; font-family: monospace; }
+        * {
+            box-sizing: border-box;
+        }
 
-    .removeBtn {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        background: #ff4d4d;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 3px 7px;
-        cursor: pointer;
-        margin-top: 0;
-    }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1f2937;
+        }
 
-    .genRow {
-        position: relative;
-        background: white;
-        padding: 8px;
-        margin-bottom: 8px;
-        border-radius: 6px;
-    }
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 35px 20px;
+        }
 
-    .genRow .removeBtn {
-        top: 8px;
-        right: 8px;
-    }
-</style>
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            color: #111827;
+        }
+
+        .header p {
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 15px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7eb;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            margin-bottom: 16px;
+            font-size: 22px;
+            color: #111827;
+        }
+
+        .section-title {
+            margin-top: 26px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #374151;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 6px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #4b5563;
+            margin-bottom: 5px;
+            margin-top: 12px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+            background: #f9fafb;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+            background: white;
+        }
+
+        textarea {
+            height: 520px;
+            resize: vertical;
+            font-family: Consolas, monospace;
+            font-size: 13px;
+            line-height: 1.45;
+            background: #111827;
+            color: #e5e7eb;
+            border-color: #374151;
+        }
+
+        button {
+            border: none;
+            border-radius: 8px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.1s, background 0.15s, box-shadow 0.15s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        .add-btn {
+            margin-top: 8px;
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .add-btn:hover {
+            background: #c7d2fe;
+        }
+
+        .generate-btn {
+            width: 100%;
+            margin-top: 28px;
+            padding: 13px;
+            background: #4f46e5;
+            color: white;
+            font-size: 15px;
+            box-shadow: 0 6px 14px rgba(79, 70, 229, 0.28);
+        }
+
+        .generate-btn:hover {
+            background: #4338ca;
+        }
+
+        .team-card,
+        .gen-row {
+            position: relative;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .team-card {
+            padding-top: 42px;
+        }
+
+        .gen-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .gen-row input {
+            margin: 0;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fee2e2;
+            color: #991b1b;
+            width: 28px;
+            height: 28px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 15px;
+            line-height: 28px;
+        }
+
+        .remove-btn:hover {
+            background: #fecaca;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .small-note {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 850px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            textarea {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+<div class="page">
 
-<h1>Bedwars Map PHP Generator</h1>
+    <div class="header">
+        <h1>Bedwars Map PHP Generator</h1>
+        <p>Enter team spawns, beds, generators, and map settings to generate PHP map config code.</p>
+    </div>
 
-<div class="box">
-    <label>Map Name:</label>
-    <input id="mapName" placeholder="flowers" />
+    <div class="main-grid">
 
-    <h3>Teams</h3>
-    <div id="teams"></div>
-    <button onclick="addTeam()">+ Add Team</button>
+        <div class="panel">
+            <h2>Map Settings</h2>
 
-    <h3>Diamond Gens</h3>
-    <div id="diamondGens"></div>
-    <button onclick="addGen('diamondGens')">+ Add Diamond Gen</button>
+            <label>Map Name</label>
+            <input id="mapName" placeholder="flowers" />
 
-    <h3>Emerald Gens</h3>
-    <div id="emeraldGens"></div>
-    <button onclick="addGen('emeraldGens')">+ Add Emerald Gen</button>
+            <label>Height Limit</label>
+            <input id="heightLimit" type="number" placeholder="116" />
 
-    <h3>Height Limit</h3>
-    <input id="heightLimit" type="number" placeholder="116" />
+            <div class="section-title">Teams</div>
+            <div id="teams"></div>
+            <button class="add-btn" onclick="addTeam()">+ Add Team</button>
 
-    <br><br>
-    <button onclick="generateCode()">Generate PHP Code</button>
+            <div class="section-title">Diamond Generators</div>
+            <div id="diamondGens"></div>
+            <button class="add-btn" onclick="addGen('diamondGens')">+ Add Diamond Gen</button>
+
+            <div class="section-title">Emerald Generators</div>
+            <div id="emeraldGens"></div>
+            <button class="add-btn" onclick="addGen('emeraldGens')">+ Add Emerald Gen</button>
+
+            <button class="generate-btn" onclick="generateCode()">Generate PHP Code</button>
+        </div>
+
+        <div class="panel">
+            <h2>Generated PHP</h2>
+            <textarea id="output" placeholder="Your generated PHP code will appear here..."></textarea>
+            <div class="small-note">
+                Coordinates are automatically rounded to the nearest 0.5.
+            </div>
+        </div>
+
+    </div>
 </div>
-
-<h2>Generated PHP</h2>
-<textarea id="output"></textarea>
 
 <script>
 const teamColors = [
@@ -78,7 +281,6 @@ function roundToHalf(num) {
 }
 
 function formatCoord(num) {
-    // parse float and round to nearest 0.5, then fix decimals to 1 digit
     let n = parseFloat(num);
     if (isNaN(n)) return "0.0";
     n = roundToHalf(n);
@@ -93,31 +295,48 @@ function parseTriple(str) {
 
 function addTeam() {
     const div = document.createElement('div');
-    div.className = 'box';
-    div.innerHTML = `
-        <button class="removeBtn" onclick="this.parentElement.remove()">X</button>
+    div.className = 'team-card';
 
-        <label>Team Color:</label>
-        <select class="teamColor">
-            ${teamColors.map(c => `<option value="${c}">${c.charAt(0).toUpperCase() + c.slice(1)} Team</option>`).join('')}
-        </select>
-        <label>Generator (X Y Z):</label>
-        <input class="generator" placeholder="0 0 0" />
-        <label>Bed (X Y Z):</label>
-        <input class="bed" placeholder="0 0 0" />
-        <label>Spawn (X Y Z):</label>
-        <input class="spawn" placeholder="0 0 0" />
+    div.innerHTML = `
+        <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
+
+        <div class="team-grid">
+            <div class="full-width">
+                <label>Team Color</label>
+                <select class="teamColor">
+                    ${teamColors.map(c => `<option value="${c}">${c.charAt(0).toUpperCase() + c.slice(1)} Team</option>`).join('')}
+                </select>
+            </div>
+
+            <div>
+                <label>Generator</label>
+                <input class="generator" placeholder="X Y Z" />
+            </div>
+
+            <div>
+                <label>Bed</label>
+                <input class="bed" placeholder="X Y Z" />
+            </div>
+
+            <div class="full-width">
+                <label>Spawn</label>
+                <input class="spawn" placeholder="X Y Z" />
+            </div>
+        </div>
     `;
+
     document.getElementById('teams').appendChild(div);
 }
 
 function addGen(type) {
     const div = document.createElement('div');
-    div.className = 'genRow';
+    div.className = 'gen-row';
+
     div.innerHTML = `
-        <button class="removeBtn" onclick="this.parentElement.remove()">X</button>
         <input class="${type}" placeholder="X Y Z" />
+        <button class="remove-btn" onclick="this.parentElement.remove()">×</button>
     `;
+
     document.getElementById(type).appendChild(div);
 }
 
@@ -125,8 +344,9 @@ function generateCode() {
     const mapName = document.getElementById('mapName').value.trim();
     const heightLimit = document.getElementById('heightLimit').value.trim() || "0";
 
-    const teamsDivs = document.querySelectorAll('#teams .box');
+    const teamsDivs = document.querySelectorAll('#teams .team-card');
     let teamsCode = [];
+
     teamsDivs.forEach(team => {
         const color = team.querySelector('.teamColor').value;
         const gen = parseTriple(team.querySelector('.generator').value);
@@ -144,9 +364,13 @@ function generateCode() {
 
     function genList(className) {
         let gens = [];
+
         document.querySelectorAll('.' + className).forEach(input => {
-            if (input.value.trim()) gens.push(parseTriple(input.value));
+            if (input.value.trim()) {
+                gens.push(parseTriple(input.value));
+            }
         });
+
         return gens.join(',\n            ');
     }
 
